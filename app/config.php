@@ -8,12 +8,12 @@ define('APP_NAME',  'Basic Name Gathering');
 define('MYSQL_HOST',        'localhost');
 define('MYSQL_DATABASE',    'db_bng');
 define('MYSQL_USERNAME',    'user_db_bng');
-define('MYSQL_PASSWORD',    '3LduNkJe55lVk0iaQRXvV0j1tZpA7OW5');
+define('MYSQL_PASSWORD',    $env['MYSQL_PASSWORD']);
 
 // Chaves de Segurança
-define('MYSQL_AES_KEY',     'Vduu47qL51hLn6bkYkY6NlO1nivsmdfD');
-define('OPENSSL_KEY',       'H0SDRQzIGqclX2kbYBk9xspdn9U5f3Wa');
-define('OPENSSL_IV',        'BzKAbjuREsHgnw56');
+define('MYSQL_AES_KEY',     $env['MYSQL_AES_KEY']);
+define('OPENSSL_KEY',       $env['OPENSSL_KEY']);
+define('OPENSSL_IV',        $env['OPENSSL_IV']);
 
 // Logs
 define('LOGS_PATH',         __DIR__ . '/../logs/app.log');
