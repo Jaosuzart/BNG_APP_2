@@ -33,9 +33,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($agents as $agent): ?>
+                            <?php foreach ($agents as $agent): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($agent->agente) ?></td>
+                                        <td><?= htmlspecialchars($agent->agente ?? '') ?></td>
                                         <td class="text-center"><?= $agent->total_clientes ?></td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -51,7 +51,7 @@
                 <div class="card-header bg-white border-0 mt-3 ms-3">
                     <h4 class="mb-0"><i class="fa-solid fa-chart-pie me-2"></i>Gráfico Visual</h4>
                 </div>
-                <div class="card-body d-flex align-items-center justify-content-center" style="min-height: 300px;">
+                <div class="card-body d-flex align-items-center justify-content-center" style="height: 300px;">
                     <canvas id="myChart"></canvas>
                 </div>
             </div>
@@ -107,3 +107,42 @@
     </div>
 
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const labels = <?= $chart_labels ?? '[]' ?>;
+    const totals = <?= $chart_totals ?? '[]' ?>;
+
+    const canvas = document.getElementById("myChart");
+    if (!canvas) return;
+
+    // 🔥 pega o gráfico existente pelo canvas (mais confiável)
+    const oldChart = Chart.getChart(canvas);
+    if (oldChart) oldChart.destroy();
+
+    // ✅ cria o gráfico novo
+    window.myChartInstance = new Chart(canvas, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Clientes",
+                data: totals,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+
+});
+</script>
+

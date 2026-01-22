@@ -1,53 +1,60 @@
 <?php
 
 namespace bng\Models;
-
 use bng\Models\BaseModel;
-
 class AdminModel extends BaseModel
 {
     // =======================================================
     // OBTER TODOS OS CLIENTES (GLOBAL)
     // =======================================================
-    public function get_all_clients()
-    {
-        $this->db_connect();
-        $results = $this->query(
-            "SELECT 
-                p.id,
-                AES_DECRYPT(p.name, '" . MYSQL_AES_KEY . "') AS name,
-                p.gender,
-                p.birthdate,
-                AES_DECRYPT(p.email, '" . MYSQL_AES_KEY . "') AS email,
-                AES_DECRYPT(p.phone, '" . MYSQL_AES_KEY . "') AS phone,
-                p.interests,
-                p.created_at,
-                AES_DECRYPT(a.name, '" . MYSQL_AES_KEY . "') AS agent
-             FROM persons p
-             LEFT JOIN agents a ON p.id_agent = a.id
-             WHERE p.deleted_at IS NULL
-             ORDER BY p.created_at DESC"
-        );
-        return $results;
-    }
+public function get_all_clients()
+{
+    $this->db_connect();
+    $results = $this->query(
+        "SELECT 
+            p.id,
+            CONVERT(AES_DECRYPT(p.name, '" . MYSQL_AES_KEY . "') USING utf8mb4) AS name,
+            p.gender,
+            p.birthdate,
+            CONVERT(AES_DECRYPT(p.email, '" . MYSQL_AES_KEY . "') USING utf8mb4) AS email,
+            CONVERT(AES_DECRYPT(p.phone, '" . MYSQL_AES_KEY . "') USING utf8mb4) AS phone,
+            p.interests,
+            p.created_at,
+            CONVERT(AES_DECRYPT(a.name, '" . MYSQL_AES_KEY . "') USING utf8mb4) AS agent
+         FROM persons p
+         LEFT JOIN agents a ON p.id_agent = a.id
+         WHERE p.deleted_at IS NULL
+         ORDER BY p.created_at DESC"
+    );
+    return $results;
+}
+
+
 
     // =======================================================
     // ESTATÍSTICAS: AGENTES E SEUS CLIENTES
     // =======================================================
-    public function get_agents_clients_stats()
-    {
-        $this->db_connect();
-        $results = $this->query(
-            "SELECT 
-                AES_DECRYPT(a.name, '" . MYSQL_AES_KEY . "') AS agente,
-                COUNT(p.id) AS total_clientes
-             FROM agents a
-             LEFT JOIN persons p ON a.id = p.id_agent AND p.deleted_at IS NULL
-             WHERE a.deleted_at IS NULL
-             GROUP BY a.id"
-        );
-        return $results->results;
-    }
+   public function get_agents_clients_stats()
+{
+    $this->db_connect();
+
+    $sql = $sql = "SELECT 
+            COALESCE(
+                CONVERT(AES_DECRYPT(a.name, '" . MYSQL_AES_KEY . "') USING utf8mb4),
+                CONCAT('Agente #', a.id)
+            ) AS agente,
+            COUNT(p.id) AS total_clientes
+        FROM agents a
+        LEFT JOIN persons p 
+            ON a.id = p.id_agent AND p.deleted_at IS NULL
+        WHERE a.deleted_at IS NULL
+        GROUP BY a.id";
+
+
+    $results = $this->query($sql);
+    return $results->results;
+}
+
 
     // =======================================================
     // ESTATÍSTICAS GLOBAIS

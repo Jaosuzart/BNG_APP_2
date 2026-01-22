@@ -10,11 +10,9 @@
 
 <!-- ✅ Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
-window.addEventListener("load", function () {
+    window.addEventListener("load", function () {
 
-    // ✅ Só roda se existir a tabela
     if (typeof $ !== "undefined" && $("#table_agents").length) {
         $("#table_agents").DataTable({
             pageLength: 5,
@@ -30,32 +28,6 @@ window.addEventListener("load", function () {
                 "sInfoFiltered": "(filtro de _MAX_)",
                 "sSearch": "Procurar:",
                 "oPaginate": { "sFirst": "<<", "sPrevious": "<", "sNext": ">", "sLast": ">>" }
-            }
-        });
-    }
-
-    // ✅ Só roda se existir o canvas
-    const canvas = document.getElementById("myChart");
-    if (canvas && typeof Chart !== "undefined") {
-        const labels = <?= $chart_labels ?? '[]' ?>;
-        const data = <?= $chart_totals ?? '[]' ?>;
-
-        new Chart(canvas, {
-            type: "bar",
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: "Total de Clientes",
-                    data: data,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                indexAxis: "y",
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } }
             }
         });
     }

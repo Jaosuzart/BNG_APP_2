@@ -34,13 +34,13 @@
                         <tbody>
                             <?php foreach ($clients as $client) : ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($client->name) ?></td>
+                                    <td><?= htmlspecialchars($client->name ) ?></td>
                                     <td class="text-center"><?= $client->gender ?></td>
                                     <td class="text-center"><?= $client->birthdate ?></td>
-                                    <td><?= htmlspecialchars($client->email) ?></td>
+                                    <td><?= htmlspecialchars($client->email ?? '') ?></td>
                                     <td class="text-center"><?= htmlspecialchars($client->phone) ?></td>
-                                    <td><small><?= htmlspecialchars($client->interests) ?></small></td>
-                                    <td><span class="badge bg-info text-dark"><?= htmlspecialchars($client->agent) ?></span></td>
+                                    <td><small><?= htmlspecialchars($client->interests ?? '') ?></small></td>
+                                    <td><span class="badge bg-info text-dark"><?= htmlspecialchars($client->agent ?? '') ?></span></td>
                                     <td class="text-center small"><?= $client->created_at ?></td>
                                 </tr>
                             <?php endforeach; ?>

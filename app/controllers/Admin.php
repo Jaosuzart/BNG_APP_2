@@ -79,28 +79,28 @@ class Admin extends BaseController
 
         $data['global_stats'] = $model->get_global_stats();
         $data['user'] = $_SESSION['user'];
-
-        // Preparar dados para o Chart.js
-        if (!empty($data['agents'])) {
-            $labels = [];
-            $totals = [];
-            foreach ($data['agents'] as $agent) {
-                $labels[] = $agent->agente;
-                $totals[] = $agent->total_clientes;
-            }
-            $data['chart_labels'] = json_encode($labels);
-            $data['chart_totals'] = json_encode($totals);
-        } else {
-            $data['chart_labels'] = '[]';
-            $data['chart_totals'] = '[]';
-        }
-
-        $this->view('layouts/html_header', $data);
-        $this->view('navbar', $data);
-        $this->view('stats', $data);
-        $this->view('footer');
-        $this->view('layouts/html_footer', $data); 
+if (!empty($data['agents'])) {
+    $labels = [];
+    $totals = [];
+    foreach ($data['agents'] as $agent) {
+        $labels[] = $agent->agente;
+        $totals[] = $agent->total_clientes;
     }
+    $data['chart_labels'] = json_encode($labels);
+    $data['chart_totals'] = json_encode($totals);
+} else {
+    $data['chart_labels'] = json_encode([]);
+    $data['chart_totals'] = json_encode([]);
+}
+
+
+$this->view('layouts/html_header', $data);
+$this->view('navbar', $data);
+$this->view('stats', $data);
+$this->view('footer');
+$this->view('layouts/html_footer', $data);
+    }
+
 
    
     public function create_pdf_report($buffer = false)
@@ -135,8 +135,8 @@ class Admin extends BaseController
             foreach ($agents as $agent) {
                 $rows .= sprintf(
                     "<tr><td>%s</td><td class=\"text-center\">%d</td></tr>\n",
-                    htmlspecialchars($agent->agente),
-                    $agent->total_clientes
+                    htmlspecialchars($agent->agente ?? ''),
+                    $agent->total_clientes ? $agent->total_clientes : 0
                 );
             }
         }
@@ -254,14 +254,11 @@ HTML;
             $mail->SMTPAuth   = true;
             $mail->Username   = EMAIL_USER;
             $mail->Password   = EMAIL_PASS;
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = EMAIL_PORT;
-
-            $mail->setFrom(EMAIL_USER, 'BNG App Admin');
-
+            $mail->setFrom(EMAIL_FROM, 'BNG App Admin');
             $email_destino = $_SESSION['user']->name;
             $mail->addAddress($email_destino);
-
             $mail->isHTML(true);
             $mail->CharSet = 'UTF-8';
             $mail->Subject = 'Relatório Estatístico bng app - ' . date('d-m-Y');
@@ -494,7 +491,7 @@ HTML;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = EMAIL_PORT;
 
-            $mail->setFrom(EMAIL_USER, 'BNG App Admin');
+            $mail->setFrom(EMAIL_FROM, 'BNG App Admin');
             $mail->addAddress($to_email);
 
             $mail->isHTML(true);
@@ -534,7 +531,7 @@ HTML;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = EMAIL_PORT;
 
-            $mail->setFrom(EMAIL_USER, 'BNG App Admin');
+            $mail->setFrom(EMAIL_FROM, 'BNG App Admin');
             $mail->addAddress($to_email);
 
             $mail->isHTML(true);
