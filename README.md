@@ -1,7 +1,7 @@
 BNG_APP_2 👤✨
 Sistema de cadastro e gestão de usuários desenvolvido em PHP, com estilização via CSS (app.css).
 📌 Visão geral
-O BNG_APP_2 é um projeto web para registrar usuários e gerenciar dados de forma organizada, com separação de pastas típica de aplicação (camada app/ e ponto de entrada em public/).
+Ele é um projeto web para registrar usuários e gerenciar dados de forma organizada, com separação de pastas típica de aplicação (camada app/ e ponto de entrada em public/).
 🧩 Tecnologias
 - PHP (back-end)
 - CSS (app.css) (estilo da aplicação)
