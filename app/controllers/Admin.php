@@ -27,7 +27,6 @@ class Admin extends BaseController
         $this->view('layouts/html_header');
         $this->view('navbar', $data);
         $this->view('global_clients', $data);
-        $this->view('footer');
         $this->view('layouts/html_footer', $data);
     }
 
@@ -97,7 +96,6 @@ if (!empty($data['agents'])) {
 $this->view('layouts/html_header', $data);
 $this->view('navbar', $data);
 $this->view('stats', $data);
-$this->view('footer');
 $this->view('layouts/html_footer', $data);
     }
 
@@ -231,7 +229,6 @@ HTML;
         $this->view('layouts/html_header', $data);
         $this->view('navbar', $data);
         $this->view('agents_management', $data);
-        $this->view('footer');
         // Passar dados para o footer aqui também é boa prática
         $this->view('layouts/html_footer', $data);
     }
@@ -292,7 +289,6 @@ HTML;
         $this->view('layouts/html_header', $data);
         $this->view('navbar', $data);
         $this->view('agents_add_new_frm', $data);
-        $this->view('footer');
         $this->view('layouts/html_footer', $data);
     }
 
@@ -370,7 +366,6 @@ HTML;
         $this->view('layouts/html_header', $data);
         $this->view('navbar', $data);
         $this->view('agents_edit_frm', $data);
-        $this->view('footer');
         $this->view('layouts/html_footer', $data);
     }
 

@@ -27,13 +27,27 @@ class Agents extends BaseModel
     // =======================================================
     // DADOS DO UTILIZADOR
     // =======================================================
-    public function get_user_data($username)
-    {
-        $params = [':username' => $username];
-        $this->db_connect();
-        $results = $this->query("SELECT id, AES_DECRYPT(name, '" . MYSQL_AES_KEY . "') name, profile FROM agents WHERE AES_ENCRYPT(:username, '" . MYSQL_AES_KEY . "') = name", $params);
-        return ['status' => 'success', 'data' => $results->results[0]];
+   public function get_user_data($username)
+{
+    $params = [':username' => $username];
+    $this->db_connect();
+
+    $results = $this->query(
+        "SELECT 
+            id,
+            CONVERT(AES_DECRYPT(name, '" . MYSQL_AES_KEY . "') USING utf8mb4) AS name,
+            profile
+         FROM agents
+         WHERE AES_ENCRYPT(:username, '" . MYSQL_AES_KEY . "') = name",
+        $params
+    );
+
+    if ($results->affected_rows == 0) {
+        return ['status' => 'error', 'data' => null];
     }
+
+    return ['status' => 'success', 'data' => $results->results[0]];
+}
 
     // =======================================================
     // DEFINIR ÚLTIMO LOGIN
@@ -59,11 +73,11 @@ class Agents extends BaseModel
         $results = $this->query(
             "SELECT 
                 id, 
-                AES_DECRYPT(name, '" . MYSQL_AES_KEY . "') name, 
+                IFNULL(CONVERT(AES_DECRYPT(name, '" . MYSQL_AES_KEY . "') USING utf8mb4), '') name, 
                 gender, 
                 birthdate, 
-                AES_DECRYPT(email, '" . MYSQL_AES_KEY . "') email, 
-                AES_DECRYPT(phone, '" . MYSQL_AES_KEY . "') phone, 
+                IFNULL(CONVERT(AES_DECRYPT(email, '" . MYSQL_AES_KEY . "') USING utf8mb4), '') email, 
+                IFNULL(CONVERT(AES_DECRYPT(phone, '" . MYSQL_AES_KEY . "') USING utf8mb4), '') phone, 
                 interests, 
                 created_at, 
                 updated_at, 
@@ -117,6 +131,8 @@ class Agents extends BaseModel
         } catch (\Exception $e) {
             $birthdate = new \DateTime('now');
         }
+           $data['text_email'] = trim((string)($data['text_email'] ?? ''));
+           $data['text_phone'] = trim((string)($data['text_phone'] ?? ''));
 
         $id_agent = $_SESSION['user']->id;
         $params = [
@@ -157,11 +173,11 @@ class Agents extends BaseModel
         $results = $this->query(
             "SELECT 
                 id, 
-                AES_DECRYPT(name, '" . MYSQL_AES_KEY . "') name, 
+                IFNULL(CONVERT(AES_DECRYPT(name, '" . MYSQL_AES_KEY . "') USING utf8mb4), '') name, 
                 gender, 
                 birthdate, 
-                AES_DECRYPT(email, '" . MYSQL_AES_KEY . "') email, 
-                AES_DECRYPT(phone, '" . MYSQL_AES_KEY . "') phone, 
+                IFNULL(CONVERT(AES_DECRYPT(email, '" . MYSQL_AES_KEY . "') USING utf8mb4), '') email, 
+                IFNULL(CONVERT(AES_DECRYPT(phone, '" . MYSQL_AES_KEY . "') USING utf8mb4), '') phone, 
                 interests 
              FROM persons WHERE id = :id_client",
             $params
@@ -208,7 +224,7 @@ class Agents extends BaseModel
                 throw new \Exception("Data vazia");
             }
             $birthdate = new \DateTime($data['text_birthdate']);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $birthdate = new \DateTime('now');
         }
 
@@ -227,6 +243,7 @@ class Agents extends BaseModel
                 name = AES_ENCRYPT(:name, '" . MYSQL_AES_KEY . "'), 
                 gender = :gender, 
                 birthdate = :birthdate, 
+            $params
                 email = AES_ENCRYPT(:email, '" . MYSQL_AES_KEY . "'), 
                 phone = AES_ENCRYPT(:phone, '" . MYSQL_AES_KEY . "'), 
                 interests = :interests, 
@@ -321,4 +338,5 @@ class Agents extends BaseModel
         // DELETE FROM apaga para sempre!
         $this->non_query("DELETE FROM persons WHERE id = :id", $params);
     }
+   
 }

@@ -28,7 +28,6 @@ class Agent extends BaseController
         $this->view('layouts/html_header');
         $this->view('navbar', $data);
         $this->view('agent_clients', $data);
-        $this->view('footer');
         $this->view('layouts/html_footer');
     }
 
@@ -58,7 +57,6 @@ class Agent extends BaseController
         $this->view('layouts/html_header', $data);
         $this->view('navbar', $data);
         $this->view('insert_client_frm', $data);
-        $this->view('footer');
         $this->view('layouts/html_footer');
     }
 
@@ -134,7 +132,7 @@ class Agent extends BaseController
     // =======================================================
     // EDITAR CLIENTE - FORMULÁRIO
     // =======================================================
-   // =======================================================
+    // =======================================================
     // EDITAR CLIENTE - FORMULÁRIO
     // =======================================================
     public function edit_client_frm()
@@ -144,13 +142,13 @@ class Agent extends BaseController
             exit;
         }
 
-        if(!isset($_GET['id'])){
+        if (!isset($_GET['id'])) {
             header('Location: ?ct=agent&mt=my_clients');
             exit;
         }
 
         $id_client = aes_decrypt($_GET['id']);
-        if(!$id_client){
+        if (!$id_client) {
             header('Location: ?ct=agent&mt=my_clients');
             exit;
         }
@@ -158,9 +156,9 @@ class Agent extends BaseController
         $model = new Agents();
         $results = $model->get_client_data($id_client);
 
-        if($results['status'] == 'error'){ 
-             header('Location: ?ct=agent&mt=my_clients');
-             exit;
+        if ($results['status'] == 'error') {
+            header('Location: ?ct=agent&mt=my_clients');
+            exit;
         }
 
         $data['user'] = $_SESSION['user'];
@@ -179,11 +177,10 @@ class Agent extends BaseController
 
         // --- CORREÇÃO AQUI ---
         // Adicionei '$data' para que o cabeçalho saiba que deve carregar o flatpickr
-        $this->view('layouts/html_header', $data); 
-        
+        $this->view('layouts/html_header', $data);
+
         $this->view('navbar', $data);
         $this->view('edit_client_frm', $data);
-        $this->view('footer');
         $this->view('layouts/html_footer');
     }
     // =======================================================
@@ -197,7 +194,7 @@ class Agent extends BaseController
         }
 
         $id_client = aes_decrypt($_POST['id_client']);
-        if(!$id_client){
+        if (!$id_client) {
             header('Location: ?ct=agent&mt=my_clients');
             exit;
         }
@@ -248,9 +245,9 @@ class Agent extends BaseController
             exit;
         }
 
-        $id_client = aes_decrypt($_GET['id']); 
-        
-        if(!$id_client){
+        $id_client = aes_decrypt($_GET['id']);
+
+        if (!$id_client) {
             header('Location: ?ct=agent&mt=my_clients');
             exit;
         }
@@ -259,7 +256,7 @@ class Agent extends BaseController
         $model->recover_client($id_client); // Certifique-se que existe no Model (UPDATE deleted_at = NULL)
 
         logger(get_active_user_name() . " recuperou o cliente ID: $id_client");
-        
+
         header('Location: ?ct=agent&mt=my_clients');
     }
 
@@ -287,7 +284,6 @@ class Agent extends BaseController
         $this->view('layouts/html_header');
         $this->view('navbar', $data);
         $this->view('upload_file_with_clients_frm', $data);
-        $this->view('footer');
         $this->view('layouts/html_footer');
     }
 
@@ -297,15 +293,18 @@ class Agent extends BaseController
     public function upload_file_submit()
     {
         if (!check_session() || $_SESSION['user']->profile != 'agent') {
-            header('Location: index.php'); exit;
+            header('Location: index.php');
+            exit;
         }
         if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-            header('Location: index.php'); exit;
+            header('Location: index.php');
+            exit;
         }
 
         if (empty($_FILES) || empty($_FILES['clients_file']['name'])) {
             $_SESSION['server_error'] = "Faça o carregamento de um ficheiro XLSX ou CSV.";
-            $this->upload_file_frm(); return;
+            $this->upload_file_frm();
+            return;
         }
 
         $valid_extensions = ['xlsx', 'csv'];
@@ -313,12 +312,14 @@ class Agent extends BaseController
         $extension = end($tmp);
         if (!in_array($extension, $valid_extensions)) {
             $_SESSION['server_error'] = "O ficheiro deve ser do tipo XLSX ou CSV.";
-            $this->upload_file_frm(); return;
+            $this->upload_file_frm();
+            return;
         }
 
         if ($_FILES['clients_file']['size'] > 2000000) {
             $_SESSION['server_error'] = "O ficheiro deve ter, no máximo, 2 MB.";
-            $this->upload_file_frm(); return;
+            $this->upload_file_frm();
+            return;
         }
 
         $file_path = __DIR__ . '/../../uploads/dados_' . time() . '.' . $extension;
@@ -328,11 +329,13 @@ class Agent extends BaseController
                 $this->load_file_data_to_database($file_path);
             } else {
                 $_SESSION['server_error'] = "O ficheiro não tem o header no formato correto.";
-                $this->upload_file_frm(); return;
+                $this->upload_file_frm();
+                return;
             }
         } else {
             $_SESSION['server_error'] = "Erro inesperado no carregamento.";
-            $this->upload_file_frm(); return;
+            $this->upload_file_frm();
+            return;
         }
     }
 
@@ -383,20 +386,24 @@ class Agent extends BaseController
 
         $model = new Agents();
         $report = ['total' => 0, 'total_carregados' => 0, 'total_nao_carregados' => 0];
-        array_shift($data); // Remove header
+        array_shift($data);
 
         foreach ($data as $client) {
             $report['total']++;
-            $exists = $model->check_if_client_exists(['text_name' => $client[0]]);
-            if (!$exists['status']) {
+            $email = trim((string)($client[3] ?? ''));
+            $phone = trim((string)($client[4] ?? ''));
+
+            if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
                 $post_data = [
-                    'text_name' => $client[0],
-                    'radio_gender' => $client[1],
-                    'text_birthdate' => $client[2],
-                    'text_email' => $client[3],
-                    'text_phone' => $client[4],
-                    'text_interests' => $client[5],
+                    'text_name'      => trim((string)$client[0]),
+                    'radio_gender'   => trim((string)$client[1]),
+                    'text_birthdate' => trim((string)$client[2]),
+                    'text_email'     => $email,
+                    'text_phone'     => $phone,
+                    'text_interests' => trim((string)$client[5]),
                 ];
+
                 $model->add_new_client_to_database($post_data);
                 $report['total_carregados']++;
             } else {
@@ -416,17 +423,18 @@ class Agent extends BaseController
     public function export_clients_xlsx()
     {
         if (!check_session() || $_SESSION['user']->profile != 'agent') {
-            header('Location: index.php'); exit;
+            header('Location: index.php');
+            exit;
         }
 
         $model = new Agents();
         $id_agent = (int)$_SESSION['user']->id;
         $results = $model->get_agent_clients($id_agent);
-        
+
         $data[] = ['name', 'gender', 'birthdate', 'email', 'phone', 'interests', 'created_at', 'updated_at'];
 
         if (!empty($results['data'])) {
-            foreach($results['data'] as $client){
+            foreach ($results['data'] as $client) {
                 $client_row = clone $client;
                 unset($client_row->id);
                 // Remove campos extra se necessário, ex: deleted_at se não quiser exportar
@@ -439,17 +447,17 @@ class Agent extends BaseController
         $worksheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, 'dados');
         $spreadsheet->addSheet($worksheet);
         $spreadsheet->removeSheetByIndex(0);
-        
-        if(count($data) > 0){
+
+        if (count($data) > 0) {
             $worksheet->fromArray($data);
         }
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="'. urlencode($filename).'"');
+        header('Content-Disposition: attachment; filename="' . urlencode($filename) . '"');
         $writer->save('php://output');
 
-        $total_registos = count($data) > 0 ? count($data) - 1 : 0;
+        $data = count($data) > 0 ? count($data) - 1 : 0;
         logger(get_active_user_name() . " - download xlsx: " . $filename);
     }
     // =======================================================
@@ -464,8 +472,8 @@ class Agent extends BaseController
 
         // Obtém o ID da URL
         $id_client = aes_decrypt($_GET['id']);
-        
-        if(!$id_client){
+
+        if (!$id_client) {
             header('Location: ?ct=agent&mt=my_clients');
             exit;
         }
@@ -475,7 +483,37 @@ class Agent extends BaseController
         $model->hard_delete_client($id_client);
 
         logger(get_active_user_name() . " destruiu permanentemente o cliente ID: $id_client");
-        
+
+        header('Location: ?ct=agent&mt=my_clients');
+    }
+    // =======================================================
+    // ELIMINAR CLIENTE (Soft Delete)
+    // =======================================================
+    public function delete_client()
+    {
+        // 1. Verificação de segurança
+        if (!check_session() || $_SESSION['user']->profile != 'agent') {
+            header('Location: index.php');
+            exit;
+        }
+
+        // 2. Obter o ID da URL (GET) e descriptografar
+        // O seu sistema usa $_GET['id'], não parâmetro de função
+        $id_client = aes_decrypt($_GET['id']);
+
+        if (!$id_client) {
+            header('Location: ?ct=agent&mt=my_clients');
+            exit;
+        }
+
+        // 3. Conectar ao Model correto (Agents)
+        $model = new Agents();
+
+        // Chama a função de deletar na model
+        $model->delete_client($id_client);
+
+        // 4. Log e Redirecionamento
+        logger(get_active_user_name() . " eliminou (soft delete) o cliente ID: $id_client");
         header('Location: ?ct=agent&mt=my_clients');
     }
 }

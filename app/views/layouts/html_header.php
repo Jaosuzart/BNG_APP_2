@@ -11,12 +11,17 @@
 
     <link rel="stylesheet" href="assets/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fontawesome/all.min.css">
-    <link rel="stylesheet" href="assets/app.css">
 
-    <!-- ✅ DataTables CSS -->
+    <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
 
     <?php if(isset($flatpickr)):?>
         <link rel="stylesheet" href="assets/flatpickr/flatpickr.min.css">
     <?php endif;?>
+    <link rel="stylesheet" href="assets/app.css">
 </head>
+
+<body>
+  <?php require_once __DIR__ . '/../navbar.php'; ?>
+
+  <main class="flex-grow-1 pb-5">

@@ -1,9 +1,12 @@
 <?php
-
 session_start();
 
-use bng\System\Router;
+require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once('../vendor/autoload.php');
+use bng\System\Router;
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
 
 Router::dispatch();

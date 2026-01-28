@@ -13,10 +13,13 @@ public function get_all_clients()
     $results = $this->query(
         "SELECT 
             p.id,
+            -- Desencripta e converte o NOME
             CONVERT(AES_DECRYPT(p.name, '" . MYSQL_AES_KEY . "') USING utf8mb4) AS name,
             p.gender,
             p.birthdate,
+            -- Desencripta e converte o EMAIL
             CONVERT(AES_DECRYPT(p.email, '" . MYSQL_AES_KEY . "') USING utf8mb4) AS email,
+            
             CONVERT(AES_DECRYPT(p.phone, '" . MYSQL_AES_KEY . "') USING utf8mb4) AS phone,
             p.interests,
             p.created_at,
@@ -28,7 +31,6 @@ public function get_all_clients()
     );
     return $results;
 }
-
 
 
     // =======================================================
@@ -104,48 +106,43 @@ public function get_all_clients()
     // =======================================================
     // OBTER AGENTES PARA GESTÃO (Corrigido para mostrar eliminados)
     // =======================================================
-    public function get_agents_for_management()
-    {
-        $this->db_connect();
-        
-        // CORREÇÃO:
-        // 1. Adicionado 'deleted_at' na lista de campos.
-        // 2. NÃO TEM 'WHERE deleted_at IS NULL'. Assim traz todos (ativos e eliminados).
-        
-        $sql = "SELECT 
-                    id, 
-                    AES_DECRYPT(name, '" . MYSQL_AES_KEY . "') as name, 
-                    profile, 
-                    last_login, 
-                    created_at, 
-                    updated_at, 
-                    deleted_at 
-                FROM agents"; 
-        
-        return $this->query($sql);
-    }
-
+  public function get_agents_for_management()
+{
+    $this->db_connect();
+    
+    // Adicionado CONVERT(... USING utf8mb4) para corrigir a leitura do nome
+    $sql = "SELECT 
+                id, 
+                CONVERT(AES_DECRYPT(name, '" . MYSQL_AES_KEY . "') USING utf8mb4) as name, 
+                profile, 
+                last_login, 
+                created_at, 
+                updated_at, 
+                deleted_at 
+            FROM agents"; 
+    
+    return $this->query($sql);
+}
     // =======================================================
     // OBTER UM AGENTE PELO ID
     // =======================================================
     public function get_agent_by_id($id)
-    {
-        $params = [':id' => $id];
-        $this->db_connect();
-        $results = $this->query(
-            "SELECT 
-                id, 
-                AES_DECRYPT(name, '" . MYSQL_AES_KEY . "') as name, 
-                profile, 
-                created_at, 
-                updated_at 
-             FROM agents 
-             WHERE id = :id", 
-            $params
-        );
-        return $results;
-    }
-
+{
+    $params = [':id' => $id];
+    $this->db_connect();
+    $results = $this->query(
+        "SELECT 
+            id, 
+            CONVERT(AES_DECRYPT(name, '" . MYSQL_AES_KEY . "') USING utf8mb4) as name, 
+            profile, 
+            created_at, 
+            updated_at 
+         FROM agents 
+         WHERE id = :id", 
+        $params
+    );
+    return $results;
+}
     // =======================================================
     // VERIFICAR SE AGENTE EXISTE (email)
     // =======================================================

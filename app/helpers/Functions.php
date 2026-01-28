@@ -14,7 +14,7 @@ function check_session()
 function logger($message = '', $level = 'info')
 {
     // create log channel
-    $log = new Logger('app_logs');
+    $log = new Logger('app_log');
     $log->pushHandler(new StreamHandler(LOGS_PATH));
 
     // add log message

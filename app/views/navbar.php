@@ -1,10 +1,10 @@
 
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(0, 0, 0, 0.2); backdrop-filter: blur(5px); position: relative; z-index: 9999;">
+<nav class="navbar navbar-expand-lg navbar-dark bng-dark-bg shadow-sm">
     <div class="container-fluid px-4">
         
-        <a class="navbar-brand d-flex align-items-center" href="?ct=main&mt=index">
-            <img src="assets/images/logo_32.png" alt="Logo" width="32" height="32" class="d-inline-block align-text-top me-2">
-            <span class="fw-bold tracking-wider">BNG</span>
+        <a class="navbar-brand d-flex align-items-center gap-2" href="?ct=main&mt=index">
+            <img src="assets/images/logo_32.png" alt="Logo" width="28" height="32" class="d-inline-block align-text-top me-2">
+            <span class="fw-bold tracking-wider" style=" font-size:1.25em">BNG</span>
         </a>
 
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,7 +15,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 
                 <li class="nav-item">
-                    <a class="nav-link active" href="?ct=main&mt=index">
+                    <a class="nav-link active text-decoration-none" href="?ct=main&mt=index">
                         <i class="fas fa-home me-1"></i> Início
                     </a>
                 </li>
@@ -44,27 +44,29 @@
 
             </ul>
 
-            <div class="d-flex text-white align-items-center">
+            <div class="d-flex align-items-center">
                 <?php if (isset($_SESSION['user'])): ?>
                     <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle  d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user-circle fa-lg me-2"></i>
                             
-                            <span class="d-inline-block text-truncate" style="max-width: 200px; vertical-align: middle;">
+                            <span class="d-inline-block text-truncate" style="min-width: 200px; vertical-align: middle;">
                                 <?= htmlspecialchars($_SESSION['user']->name) ?>
                             </span>
 
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="userDropdown">
-                             <li><a class="dropdown-item text-white mb-2" href="?ct=main&mt=change_password_frm"><i class="fas fa-key me-2"></i>Alterar Password</a></li>
+                             <li><a class="dropdown-item  mb-2" href="?ct=main&mt=change_password_frm"><i class="fas fa-key me-2"></i>Alterar Password</a></li>
                              <li><hr class="dropdown-divider"></li>
                              <li><a class="dropdown-item" href="?ct=main&mt=logout"><i class="fas fa-sign-out-alt me-2"></i>Sair</a></li>
                         </ul>
                     </div>
                 <?php else: ?>
-                    <a class="nav-link text-white" href="?ct=main&mt=login">
+                   <?php if(!isset($_GET['mt'])|| $_GET['mt']!== 'login'):?>
+                    <a class ="nav-link " href="?ct=main&mt=login">
                         <i class="fas fa-sign-in-alt me-2"></i> Login
                     </a>
+                   <?php endif; ?>
                 <?php endif; ?>
             </div>
             

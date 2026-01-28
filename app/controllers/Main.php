@@ -23,7 +23,6 @@ class Main extends BaseController
         $this->view('layouts/html_header');
         $this->view('navbar', $data);
         $this->view('homepage', $data);
-        $this->view('footer');
         $this->view('layouts/html_footer');
     }
 
@@ -118,11 +117,20 @@ class Main extends BaseController
         }
 
         $model = new Agents();
-        $result = $model->check_login($username, $password);
-        if(!$result['status']){
-            logger("$username - login inválido", 'error');
-            $_SESSION['server_error'] = 'Login inválido';
-            $this->login(); 
+        $user = $model->get_user_data($username);
+      if ($user['status'] != 'success') {
+    $data['server_error'] = "Utilizador ou password inválidos.";
+    $this->view('layouts/html_header');
+    $this->view('login_frm', $data);
+    $this->view('layouts/html_footer');
+    return;
+}
+        $results = $model->check_login($username, $password);
+        if(!$results['status']){
+            $data['server_error'] = "Utilizador ou password inválidos.";
+            $this->view('layouts/html_header');
+            $this->view('login_frm', $data);
+            $this->view('layouts/html_footer');
             return;
         }
 
@@ -196,22 +204,32 @@ class Main extends BaseController
 
         $email_sender = new \bng\Models\SendEmail(); 
         $resultado = $email_sender->send_reset_code($email, $code);
+if (!is_array($resultado) || !array_key_exists('status', $resultado)) {
+    $resultado = [
+        'status' => false,
+        'error'  => 'Falha inesperada ao enviar email. (send_code não retornou status)'
+    ];
+}
 
-        if($resultado['status']){
-            $data['success_message'] = "Foi enviado um código de verificação para o email: <strong>$email</strong>.<br>Verifique a sua caixa de entrada (e spam).";
-            
-            $this->view('layouts/html_header');
-            $this->view('reset_password_insert_code', $data);
-            $this->view('layouts/html_footer');
-        } else {
-            $data['erro'] = "Erro ao enviar email: " . $resultado['error'];
-            
-            $this->view('layouts/html_header');
-            $this->view('reset_password_frm', $data);
-            $this->view('layouts/html_footer');
-        }
+if (!empty($resultado['status'])) {
+    $data['success_message'] =
+        "Foi enviado um código de verificação para o email: <strong>$email</strong>.<br>
+         Verifique a sua caixa de entrada (e spam).";
+
+    $this->view('layouts/html_header');
+    $this->view('reset_password_insert_code', $data);
+    $this->view('layouts/html_footer');
+
+} else {
+
+    $erroMsg = $resultado['error'] ?? 'Sem detalhes adicionais.';
+    $data['erro'] = "Erro ao enviar email: " . $erroMsg;
+
+    $this->view('layouts/html_header');
+    $this->view('reset_password_frm', $data);
+    $this->view('layouts/html_footer');
+}
     }
-
     // 3. Inserir Código (View)
     public function reset_password_insert_code()
     {
@@ -349,7 +367,6 @@ class Main extends BaseController
         $this->view('layouts/html_header');
         $this->view('navbar', $data);
         $this->view('profile_change_password_frm', $data);
-        $this->view('footer');
         $this->view('layouts/html_footer');
     }
 
@@ -420,7 +437,6 @@ class Main extends BaseController
         $this->view('layouts/html_header');
         $this->view('navbar', $data);
         $this->view('profile_change_password_success');
-        $this->view('footer');
         $this->view('layouts/html_footer');
     }
 }

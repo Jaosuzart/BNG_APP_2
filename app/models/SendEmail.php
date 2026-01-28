@@ -3,71 +3,75 @@
 namespace bng\Models;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
 class SendEmail
 {
-    public function send_reset_code($email_destinatario, $codigo)
+    public function send_reset_code(string $email_destinatario, int $codigo): array
     {
-        // =============================================================
-        // CORREÇÃO DOS CAMINHOS (Aponta para a pasta vendor)
-        // =============================================================
-        
-        // __DIR__ pega a pasta atual (app/models). 
-        // Subimos duas vezes (../../) para chegar à raiz e entrar em vendor.
-        $path = __DIR__ . '/../../vendor/phpmailer/phpmailer/src/';
+        // 1) Autoload do Composer (precisa existir)
+        $autoloadPath = __DIR__ . '/../../vendor/autoload.php';
+        if (!file_exists($autoloadPath)) {
+            return [
+                'status' => false,
+                'error'  => 'Autoload do Composer não encontrado em: ' . $autoloadPath,
+            ];
+        }
+        require_once $autoloadPath;
 
-        // Verifica se os arquivos existem antes de carregar (para evitar erros fatais diretos)
-        if (!file_exists($path . 'Exception.php')) {
-            die('Erro: Não foi possível encontrar a biblioteca PHPMailer em: ' . $path);
+        // 2) Lê configs do .env (prioriza $_ENV, depois getenv)
+        $fromEmail = trim($_ENV['EMAIL_USERNAME'] ?? (getenv('EMAIL_USERNAME') ?: ''));
+        $fromPass  = trim($_ENV['EMAIL_PASSWORD'] ?? (getenv('EMAIL_PASSWORD') ?: ''));
+        $smtpHost  = trim($_ENV['EMAIL_HOST'] ?? (getenv('EMAIL_HOST') ?: 'smtp.gmail.com'));
+        $smtpPort  = (int) trim($_ENV['EMAIL_PORT'] ?? (getenv('EMAIL_PORT') ?: '587'));
+
+        // 3) Validações (sem warnings)
+        if ($fromEmail === '' || !filter_var($fromEmail, FILTER_VALIDATE_EMAIL)) {
+            return [
+                'status' => false,
+                'error'  => 'EMAIL_USERNAME inválido no .env (valor lido: "' . $fromEmail . '")',
+            ];
         }
 
-        require_once($path . 'Exception.php');
-        require_once($path . 'PHPMailer.php');
-        require_once($path . 'SMTP.php');
+        if ($fromPass === '') {
+            return [
+                'status' => false,
+                'error'  => 'EMAIL_PASSWORD vazio no .env',
+            ];
+        }
 
-        $mail = new PHPMailer(true);
+        if ($email_destinatario === '' || !filter_var($email_destinatario, FILTER_VALIDATE_EMAIL)) {
+            return [
+                'status' => false,
+                'error'  => 'Email destinatário inválido.',
+            ];
+        }
 
         try {
-            // =============================================================
-            // CONFIGURAÇÕES DO SERVIDOR
-            // =============================================================
-            $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPAuth   = true;
-            $mail->Username   ='joaomarcelosuzartcastro@gmail.com';   // Seu Email
-            $mail->Password   ='rywsntnkxzqhzuta
-';                    
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            $mail = new PHPMailer(true);
 
-            // =============================================================
-            // DESTINATÁRIOS E CONTEÚDO
-            // =============================================================
-            $mail->setFrom('joaomarcelosuzartcastro@gmail.com', 'BNG Support');
+            $mail->isSMTP();
+            $mail->Host       = $smtpHost;
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $fromEmail;
+            $mail->Password   = $fromPass;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = $smtpPort;
+
+            $mail->setFrom($fromEmail, 'BNG Support');
             $mail->addAddress($email_destinatario);
 
             $mail->isHTML(true);
             $mail->CharSet = 'UTF-8';
             $mail->Subject = 'Recuperação de Password - BNG';
-            
-            $mail->Body    = "
-                <div style='font-family: Arial, sans-serif; padding: 20px; color: #333;'>
-                    <h2 style='color: #6c757d;'>Basic Name Gathering</h2>
-                    <p>Recebemos um pedido para recuperar a sua password.</p>
-                    <p>O seu código de verificação é:</p>
-                    <div style='background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; text-align: center; border-radius: 5px; width: fit-content;'>
-                        <span style='font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #0d6efd;'>$codigo</span>
-                    </div>
-                    <p style='margin-top: 20px; font-size: 12px; color: #999;'>Se não pediu este código, por favor ignore este email.</p>
-                </div>
-            ";
+            $mail->Body    = "<p>Seu código: <b>{$codigo}</b></p>";
 
             $mail->send();
-            return ['status' => true];
 
-        } catch (Exception $e) {
-            echo "Erro:" .$e->getMessage();
+            // ✅ Sempre retorna status boolean + error (null)
+            return ['status' => true, 'error' => null];
+
+        } catch (\Throwable $e) {
+            return ['status' => false, 'error' => $e->getMessage()];
         }
     }
 }
