@@ -37,5 +37,6 @@ Passo a passo
 1) Clone o repositório
 bash
 git clone https://github.com/Jaosuzart/BNG_APP_2.git
+
 cd BNG_APP_2
 
