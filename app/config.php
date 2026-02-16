@@ -40,8 +40,8 @@ define('APP_NAME', 'Basic Name Gathering');
 
 // Configurações de Banco de Dados
 define('MYSQL_HOST',      $env['MYSQL_HOST'] ?? 'localhost');
-define('MYSQL_DATABASE',  $env['MYSQL_DATABASE'] ?? 'db_bng');
-define('MYSQL_USERNAME',  $env['MYSQL_USERNAME'] ?? 'root');
+define('MYSQL_DATABASE',  $env['MYSQL_DATABASE'] ?? '');
+define('MYSQL_USERNAME',  $env['MYSQL_USERNAME'] ?? '');
 define('MYSQL_PASSWORD',  $env['MYSQL_PASSWORD'] ?? '');
 
 // Chaves de Segurança (Essencial para ler os dados do banco)

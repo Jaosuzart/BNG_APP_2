@@ -80,8 +80,8 @@ class Main extends BaseController
             return;
         }
 
-        $username = $_POST['text_username'];
-        $password = $_POST['text_password'];
+        $username = trim($_POST['text_username']);
+        $password = trim($_POST['text_password']);
 
         if(!filter_var($username, FILTER_VALIDATE_EMAIL))
         {
@@ -97,7 +97,6 @@ class Main extends BaseController
             $this->login(); 
             return;
         }
-
         // --- VALIDAÇÃO DA PASSWORD (LOGIN) ---
         // Verifica comprimento exato
         if(strlen($password) != 12){
@@ -118,6 +117,7 @@ class Main extends BaseController
 
         $model = new Agents();
         $user = $model->get_user_data($username);
+        
       if ($user['status'] != 'success') {
     $data['server_error'] = "Utilizador ou password inválidos.";
     $this->view('layouts/html_header');
@@ -125,7 +125,7 @@ class Main extends BaseController
     $this->view('layouts/html_footer');
     return;
 }
-        $results = $model->check_login($username, $password);
+      $results = $model->check_login($username, $password);
         if(!$results['status']){
             $data['server_error'] = "Utilizador ou password inválidos.";
             $this->view('layouts/html_header');

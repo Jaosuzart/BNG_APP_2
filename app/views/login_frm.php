@@ -10,8 +10,8 @@
                 </div>
 
                 <form action="?ct=main&mt=login_submit" method="post">
-                    
-                    <?php if(!empty($server_error)): ?>
+
+                    <?php if (!empty($server_error)): ?>
                         <div class="alert alert-danger text-center p-2 mb-3 shadow-sm">
                             <i class="fa-solid fa-circle-exclamation me-2"></i><?= $server_error ?>
                         </div>
@@ -39,10 +39,15 @@
                         </a>
                     </div>
 
-                    <?php if(!empty($validation_errors)): ?>
-                        <div class="alert alert-warning p-2 small shadow-sm">
-                            <ul class="mb-0 ps-3">
-                                <?php foreach($validation_errors as $error): ?>
+                    <?php if (!empty($validation_errors)): ?>
+                        <div class="alert alert-danger" style="position: relative;">
+
+                            <span onclick="this.parentElement.style.display='none'"
+                                style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-weight: bold; font-size: 18px;">
+                                &times;
+                            </span>
+                            <ul>
+                                <?php foreach ($validation_errors as $error): ?>
                                     <li><?= $error ?></li>
                                 <?php endforeach; ?>
                             </ul>
