@@ -1,7 +1,7 @@
 #  BNG_APP_2 (Basic Name Gathering)
 Sistema de gestão desenvolvido em **PHP** com arquitetura **MVC**. O projeto foca no gerenciamento de clientes, estatísticas de dados e administração de usuários, oferecendo uma interface limpa e intuitiva.
 Ideal para práticas de desenvolvimento web, controle de acesso e manipulação de dados relacionais.
-<img width="1440" height="900" alt="image (3)" src="https://github.com/user-attachments/assets/6b6ad9a7-8f69-4766-8e72-d7510551d720" />
+<img width="1400" height="720" alt="image (3)" src="https://github.com/user-attachments/assets/c30dc067-282a-4d97-9c47-2ddbbcf9d78d" />
 ## 🚀 Funcionalidades
 ### 👥 Gestão de Clientes
 - [x] Cadastro de novos clientes
