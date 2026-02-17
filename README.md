@@ -2,6 +2,7 @@
 Sistema de gestão desenvolvido em **PHP** com arquitetura **MVC**. O projeto foca no gerenciamento de clientes, estatísticas de dados e administração de usuários, oferecendo uma interface limpa e intuitiva.
 Ideal para práticas de desenvolvimento web, controle de acesso e manipulação de dados relacionais.
 ![Uploading image.png…]()
+
 ## 🚀 Funcionalidades
 ### 👥 Gestão de Clientes
 - [x] Cadastro de novos clientes
