@@ -1,5 +1,2 @@
-firebase_credentials.json
-cacert.pem
 .env
 /vendor
-/node_modules
