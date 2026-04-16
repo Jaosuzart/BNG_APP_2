@@ -4,9 +4,9 @@
             
             <div class="card shadow border-0">
                 <div class="card-header bg-primary text-white p-4">
-                    <h4 class="mb-0">
+                    <h2 class="mb-0">
                         <i class="fas fa-user-edit me-2"></i> Editar Agente
-                    </h4>
+                    </h2>
                 </div>
 
                 <div class="card-body p-5">

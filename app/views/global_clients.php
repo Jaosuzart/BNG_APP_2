@@ -4,7 +4,7 @@
 
             <div class="row mb-3">
                 <div class="col">
-                    <h4 class="mb-0"><i class="fa-solid fa-users-viewfinder me-2"></i>Clientes (Global)</h4>
+                    <h5 class="mb-0"><i class="fa-solid fa-users-viewfinder me-2"></i>Clientes (Global)</h5>
                 </div>
             </div>
             <hr>

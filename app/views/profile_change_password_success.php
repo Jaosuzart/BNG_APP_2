@@ -7,7 +7,7 @@
                     <i class="fa-solid fa-circle-check fa-5x"></i>
                 </div>
 
-                <h3 class="fw-bold">Password Atualizada</h3>
+                <h7 class="fw-bold">Password Atualizada</h7>
                 <p class="text-secondary mt-3">A sua password foi alterada com sucesso.</p>
 
                 <div class="mt-4">

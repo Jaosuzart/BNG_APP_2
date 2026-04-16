@@ -5,7 +5,7 @@
 
                 <div class="d-flex align-items-center justify-content-center my-4">
                     <img src="assets/images/logo_64.png" class="img-fluid me-3">
-                    <h2><strong><?= APP_NAME ?></strong></h2>
+                    <h3><strong><?= APP_NAME ?></strong></h3>
                 </div>
 
                 <p class="text-center">Foi enviado um email para <strong>[email]</strong><br>com as instruções para conclusão do registo.</p>

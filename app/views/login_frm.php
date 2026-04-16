@@ -5,7 +5,7 @@
 
                 <div class="text-center mb-4">
                     <img src="assets/images/logo_64.png" class="img-fluid mb-3" width="64">
-                    <h3 class="fw-bold text-dark"><?= APP_NAME ?></h3>
+                    <h6 class="fw-bold text-dark"><?= APP_NAME ?></h6>
                     <p class="text-muted small">Bem-vindo de volta!</p>
                 </div>
 

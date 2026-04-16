@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-12 col-xl-10">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="text-dark">Gestão de agentes</h3>
+                <h4 class="text-dark">Gestão de agentes</h6>
                 <a href="?ct=admin&mt=new_agent_frm" class="btn btn-primary">
                     <i class="fas fa-user-plus me-2"></i> Novo agente
                 </a>

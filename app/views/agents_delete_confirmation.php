@@ -3,11 +3,11 @@
         <div class="col-sm-8 col-10">
             <div class="card p-4">
 
-                <h1 class="text-center text-warning mb-3"><i class="fa-solid fa-triangle-exclamation"></i></h1>
+                <h2 class="text-center text-warning mb-3"><i class="fa-solid fa-triangle-exclamation"></i></h3>
 
                 <p class="text-center mb-3">Deseja eliminar o agente?</p>
                 
-                <h4 class="mb-3 text-center"><strong><?= $agent->$name ?></strong></h4>
+                <h2 class="mb-3 text-center"><strong><?= $agent->$name ?></strong></h4>
 
                 <p class="text-center">Total clientes: <strong><?= $agent->total_clients ?></strong></p>
 

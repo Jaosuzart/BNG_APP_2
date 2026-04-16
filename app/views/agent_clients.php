@@ -3,7 +3,7 @@
         <div class="col-12 bg-white p-4 shadow-sm rounded">
 
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="mb-0"><i class="fa-solid fa-users me-2"></i>Meus Clientes</h4>
+                <h1 class="mb-0"><i class="fa-solid fa-users me-2"></i>Meus Clientes</h1>
                 <div class="text-end">
                     <a href="?ct=agent&mt=upload_file_frm" class="btn btn-secondary btn-sm px-3 mb-1"><i class="fa-solid fa-upload me-2"></i>Carregar</a>
                     <a href="?ct=agent&mt=new_client_frm" class="btn btn-primary btn-sm px-3 mb-1"><i class="fa-solid fa-plus me-2"></i>Novo</a>

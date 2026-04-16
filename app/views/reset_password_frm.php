@@ -5,7 +5,7 @@
 
                 <div class="d-flex align-items-center justify-content-center my-4">
                     <img src="assets/images/logo_64.png" class="img-fluid me-3" width="60">
-                    <h2><strong><?= APP_NAME ?></strong></h2>
+                    <h7><strong><?= APP_NAME ?></strong></h7>
                 </div>
 
                 <div class="row justify-content-center">

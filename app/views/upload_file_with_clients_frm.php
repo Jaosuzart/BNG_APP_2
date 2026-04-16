@@ -6,7 +6,7 @@
                 <div class="row justify-content-center">
                     <div class="col-10">
 
-                        <h4 class="mb-4"><strong>Carregar ficheiro de clientes</strong></h4>
+                        <h7 class="mb-4"><strong>Carregar ficheiro de clientes</strong></h7>
 
                         <p class="text-center">Carregar ficheiro em formato XLSX ou CSV. Se não tem o template do ficheiro, faça download <a href="assets/file_template/template.xlsx">AQUI</a></p>
 

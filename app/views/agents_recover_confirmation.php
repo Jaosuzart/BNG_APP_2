@@ -3,7 +3,7 @@
         <div class="col-sm-8 col-10">
             <div class="card p-4">
 
-                <h1 class="text-center text-info mb-3"><i class="fa-regular fa-circle-question"></i></h1>
+                <h4 class="text-center text-info mb-3"><i class="fa-regular fa-circle-question"></i></h1>
 
                 <p class="text-center mb-3">Deseja recuperar o agente?</p>
                 

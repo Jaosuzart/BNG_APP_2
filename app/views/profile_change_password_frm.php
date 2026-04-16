@@ -3,7 +3,7 @@
             <div class="card p-4 shadow-sm" style="border-radius: 15px;">
 
                 <div class="text-center mb-4">
-                    <h3 class="fw-bold"><i class="fa-solid fa-key me-2 text-secondary"></i>Alterar Password</h3>
+                    <h7 class="fw-bold"><i class="fa-solid fa-key me-2 text-secondary"></i>Alterar Password</h7>
                 </div>
                 
                 <hr class="mb-4">

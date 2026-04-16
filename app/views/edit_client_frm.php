@@ -6,7 +6,7 @@
                 <div class="row justify-content-center">
                     <div class="col-12 col-xl-10">
 
-                        <h4 class="text-center mb-4"><strong>Editar dados do cliente</strong></h4>
+                        <h5 class="text-center mb-4"><strong>Editar dados do cliente</strong></h5>
                         <hr>
 
                         <?php if (!empty($validation_errors)): ?>

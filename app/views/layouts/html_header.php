@@ -1,6 +1,9 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Gerenciamento de Clientes e Agentes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="assets/images/logo_32.png" type="image/png">
     <title><?= APP_NAME ?></title>
@@ -21,7 +24,7 @@
     <link rel="stylesheet" href="assets/app.css">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
   <?php require_once __DIR__ . '/../navbar.php'; ?>
 
   <main class="flex-grow-1 pb-5">

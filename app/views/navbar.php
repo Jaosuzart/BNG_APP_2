@@ -3,7 +3,7 @@
     <div class="container-fluid px-4">
         
         <a class="navbar-brand d-flex align-items-center gap-2" href="?ct=main&mt=index">
-            <img src="assets/images/logo_32.png" alt="Logo" width="28" height="32" class="d-inline-block align-text-top me-2">
+            <img src="assets/images/logo_128.png" alt="Logo" width="32" height="32" class="d-inline-block align-text-top me-2">
             <span class="fw-bold tracking-wider" style=" font-size:1.25em">BNG</span>
         </a>
 

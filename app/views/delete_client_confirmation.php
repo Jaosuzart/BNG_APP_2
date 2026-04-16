@@ -1,7 +1,7 @@
         <div class="col-sm-8 col-10">
             <div class="card p-4">
 
-                <h1 class="text-center text-warning mb-4"><i class="fa-solid fa-triangle-exclamation"></i></h1>
+                <h5 class="text-center text-warning mb-4"><i class="fa-solid fa-triangle-exclamation"></i></h5>
 
                 <p class="text-center mb-4">Deseja eliminar o cliente?</p>
                 

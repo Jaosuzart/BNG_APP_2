@@ -3,9 +3,9 @@
         <div class="col-lg-8 col-md-10">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">
+                    <h2 class="mb-0">
                         <i class="fas fa-user-plus me-2"></i> Adicionar Novo Agente
-                    </h4>
+                    </h2>
                 </div>
                 <div class="card-body p-5">
 
